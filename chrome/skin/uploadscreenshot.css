@@ -1,6 +1,6 @@
 #uploadscreen-button {
     list-style-image: url("chrome://uploadscreenshot/skin/icon_tiny.png");
-    -moz-box-orient: vertical;
+    -moz-box-orient: horizontal;
 }
 
 #uploadscreen_popup menuitem[selected=true] {

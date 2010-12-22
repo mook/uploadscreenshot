@@ -15,7 +15,7 @@
     <toolbarpalette id="BrowserToolbarPalette">
         <toolbarbutton id="uploadscreen-button"
                        type="menu-button"
-                       align="center"
+                       class="toolbarbutton-1"
                        label="&button.label;"
                        tooltiptext="&button.tooltip;"
                        oncommand="com.uploadScreenShot.screenshot_capture();">

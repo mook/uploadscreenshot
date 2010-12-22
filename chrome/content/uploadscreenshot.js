@@ -274,7 +274,11 @@ if (!com.uploadScreenShot) {
             // convert string filepath to an nsIFile
             var file = com.uploadScreenShot.IO.createLocalFile(filein);
 
-            var html = com.uploadScreenShot.get_page_html();
+            if (com.uploadScreenShot.Prefs.sendURL ||
+                com.uploadScreenShot.Prefs.sendHTMLContents)
+            {
+                var html = com.uploadScreenShot.get_page_html();
+            }
 
             // prepare the MIME POST data
             var boundaryString = '111capitano897654123';

@@ -54,11 +54,19 @@ if (!com.uploadScreenShot) {
                 }
 
                 selectMenuItem();
+
+                document.getElementById("contentAreaContextMenu")
+                        .addEventListener("popupshowing", _onContextMenu, false);
             }
         },
 
         unload : function () {
             com.uploadScreenShot.removeUninstallObserver();
+        },
+
+        _onContextMenu: function(e) {
+            var elem = document.getElementById("screenshot_upload_mi");
+            elem.hidden = !com.uploadScreenShot.Prefs.contextMenu;
         },
 
         _openFeedbackPage : function() {

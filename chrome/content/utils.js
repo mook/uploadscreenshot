@@ -48,6 +48,7 @@ com.uploadScreenShot.Prefs._boolPref("first_run", true, "isFirstRun");
 com.uploadScreenShot.Prefs._charPref("mode", "visiable_upload");
 com.uploadScreenShot.Prefs._boolPref("sendHTMLContents", true);
 com.uploadScreenShot.Prefs._boolPref("sendURL", true);
+com.uploadScreenShot.Prefs._boolPref("contextMenu", true);
 
 //////////////////////   IO Utilities     //////////////////////////////////
 

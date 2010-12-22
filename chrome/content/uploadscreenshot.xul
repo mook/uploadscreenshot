@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet type="text/css" href="chrome://uploadscreenshot/skin/uploadscreenshot.css"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://uploadscreenshot/locale/labels.dtd">
+
+<overlay id="screenShotOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="application/x-javascript" src="chrome://uploadscreenshot/content/uploadscreenshot.js"></script>
+    <script type="application/x-javascript" src="chrome://uploadscreenshot/content/clipboard.js"></script>
+    <script type="application/x-javascript" src="chrome://uploadscreenshot/content/i18n.js"></script>
+    <script type="application/x-javascript" src="chrome://uploadscreenshot/content/utils.js"></script>
+    <script type="application/x-javascript" src="chrome://global/content/globalOverlay.js"/>
+
+    <statusbar id="status-bar">
+        <toolbarbutton id="uploadscreen-button"
+                       hidden="true"
+                       type="menu-button"
+                       align="center"
+                       label="&button.label;"
+                       tooltiptext="&button.tooltip;"
+                       oncommand="com.uploadScreenShot.screenshot_capture();">
+
+            <menupopup id="uploadscreen_popup" onpopupshowing="com.uploadScreenShot.selectMenuItem()">
+
+                <menuitem id="button_action"
+                          disabled="true"
+                          class="non-selectable"
+                          label="&mi.buttonAction.label;"
+                          tooltiptext="&mi.buttonAction.tooltip;"
+                          oncommand="event.stopPropagation();"/>
+
+                <menuitem disabled="true"
+                          class="non-selectable"
+                          label="&mi.captureVisibleArea.label;"
+                          tooltiptext="&mi.captureVisibleArea.tooltip;"
+                          oncommand="event.stopPropagation();"/>
+
+                <menuitem id="visiable_upload"
+                          label="&mi.upload.label;"
+                          tooltiptext="&mi.upload.tooltip;"
+                          class="menuitem-iconic"
+                          oncommand="com.uploadScreenShot.check_id(event); event.stopPropagation();"/>
+                <menuitem id="visiable_copy_clip"
+                          label="&mi.copyToClipboard.label;"
+                          tooltiptext="&mi.copyToClipboard.tooltip;"
+                          class="menuitem-iconic"
+                          oncommand="com.uploadScreenShot.check_id(event); event.stopPropagation();"/>
+                <menuitem id="visiable_copy_clip_upload"
+                          label="&mi.uploadAndCopy.label;"
+                          tooltiptext="&mi.uploadAndCopy.tooltip;"
+                          class="menuitem-iconic"
+                          oncommand="com.uploadScreenShot.check_id(event); event.stopPropagation();"/>
+                <menuitem id="visiable_save_as_png"
+                          label="&mi.saveAsPng.label;"
+                          tooltiptext="&mi.saveAsPng.tooltip;"
+                          class="menuitem-iconic"
+                          oncommand="com.uploadScreenShot.check_id(event); event.stopPropagation();"/>
+
+                <menuitem disabled="true"
+                          class="non-selectable"
+                          label="&mi.captureWholePage.label;"
+                          tooltiptext="&mi.captureWholePage.tooltip;"
+                          oncommand="event.stopPropagation();"/>
+
+                <menuitem id="fullpage_upload"
+                          label="&mi.upload.label;"
+                          tooltiptext="&mi.upload.tooltip;"
+                          class="menuitem-iconic"
+                          oncommand="com.uploadScreenShot.check_id(event); event.stopPropagation();"/>
+                <menuitem id="fullpage_copy_clip"
+                          label="&mi.copyToClipboard.label;"
+                          tooltiptext="&mi.copyToClipboard.tooltip;"
+                          class="menuitem-iconic"
+                          oncommand="com.uploadScreenShot.check_id(event); event.stopPropagation();"/>
+                <menuitem id="fullpage_copy_clip_upload"
+                          label="&mi.uploadAndCopy.label;"
+                          tooltiptext="&mi.uploadAndCopy.tooltip;"
+                          class="menuitem-iconic"
+                          oncommand="com.uploadScreenShot.check_id(event); event.stopPropagation();"/>
+                <menuitem id="fullpage_save_as_png"
+                          label="&mi.saveAsPng.label;"
+                          tooltiptext="&mi.saveAsPng.tooltip;"
+                          class="menuitem-iconic"
+                          oncommand="com.uploadScreenShot.check_id(event); event.stopPropagation();"/>
+                <menuseparator/>
+
+                <menuitem id="do_this_now"
+                          disabled="true"
+                          class="non-selectable"
+                          label="&mi.doThisNow.label;"
+                          tooltiptext="&mi.doThisNow.tooltip;"
+                          oncommand="event.stopPropagation();"/>
+
+                <menuitem disabled="true"
+                          class="non-selectable"
+                          label="&mi.captureVisibleArea.label;"
+                          tooltiptext="&mi.captureVisibleArea.tooltip;"
+                          oncommand="event.stopPropagation();"/>
+
+                <menuitem id="visiable_upload_nopre"
+                          label="&mi.upload.label;"
+                          tooltiptext="&mi.upload.tooltip;"
+                          oncommand="com.uploadScreenShot.drawPageVisiable(event); event.stopPropagation();"/>
+                <menuitem id="visiable_copy_clip_nopre"
+                          label="&mi.copyToClipboard.label;"
+                          tooltiptext="&mi.copyToClipboard.tooltip;"
+                          oncommand="com.uploadScreenShot.drawPageVisiable(event); event.stopPropagation();"/>
+                <menuitem id="visiable_copy_clip_upload_nopre"
+                          label="&mi.uploadAndCopy.label;"
+                          tooltiptext="&mi.uploadAndCopy.tooltip;"
+                          oncommand="com.uploadScreenShot.drawPageVisiable(event); event.stopPropagation();"/>
+                <menuitem id="visiable_save_as_png_nopre"
+                          label="&mi.saveAsPng.label;"
+                          tooltiptext="&mi.saveAsPng.tooltip;"
+                          oncommand="com.uploadScreenShot.drawPageVisiable(event); event.stopPropagation();"/>
+
+                <menuitem disabled="true"
+                          class="non-selectable"
+                          label="&mi.captureWholePage.label;"
+                          tooltiptext="&mi.captureWholePage.tooltip;"
+                          oncommand="event.stopPropagation();"/>
+                <menuitem id="fullpage_upload_nopre"
+                          label="&mi.upload.label;"
+                          tooltiptext="&mi.upload.tooltip;"
+                          oncommand="com.uploadScreenShot.drawPageFull(event); event.stopPropagation();"/>
+                <menuitem id="fullpage_copy_clip_nopre"
+                          label="&mi.copyToClipboard.label;"
+                          tooltiptext="&mi.copyToClipboard.tooltip;"
+                          oncommand="com.uploadScreenShot.drawPageFull(event); event.stopPropagation();"/>
+                <menuitem id="fullpage_copy_clip_upload_nopre"
+                          label="&mi.uploadAndCopy.label;"
+                          tooltiptext="&mi.uploadAndCopy.tooltip;"
+                          oncommand="com.uploadScreenShot.drawPageFull(event); event.stopPropagation();"/>
+                <menuitem id="fullpage_save_as_png_nopre"
+                          label="&mi.saveAsPng.label;"
+                          tooltiptext="&mi.saveAsPng.tooltip;"
+                          oncommand="com.uploadScreenShot.drawPageFull(event); event.stopPropagation();"/>
+
+                <menuseparator/>
+
+                <menuitem label="&mi.viewTutorial.label;"
+                          tooltiptext="&mi.viewTutorial.tooltip;"
+                          oncommand="com.uploadScreenShot.openTab('http://www.uploadscreenshot.com/ff-tutorial');event.stopPropagation();"/>
+
+                <menuseparator/>
+
+                <menuitem label="&mi.help.label;"
+                          tooltiptext="&mi.help.tooltip;"
+                          oncommand="com.uploadScreenShot.openTab('http://www.uploadscreenshot.com/ff-help');event.stopPropagation();"/>
+            </menupopup>
+        </toolbarbutton>
+
+        <statusbarpanel id="screenshot_status" label=""/>
+    </statusbar>
+
+    <popup id="contentAreaContextMenu">
+        <menuitem id="screenshot_upload_mi"
+                  insertafter="context-selectall"
+                  accesskey="&cm.capture.accesskey;"
+                  class="menuitem-iconic"
+                  label="&cm.capture.label;"
+                  oncommand="com.uploadScreenShot.screenshot_capture();"/>
+    </popup>
+</overlay>

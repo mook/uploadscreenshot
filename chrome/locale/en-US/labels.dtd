@@ -1,0 +1,59 @@
+<!ENTITY TranslatableDTD.Version "1.0">
+
+<!ENTITY	button.label	                     "Upload Screen Shot">
+<!ENTITY	button.tooltip	                     "UploadScreenshot.com Capture">
+
+<!ENTITY	mi.buttonAction.label	             "Screenshot button action">
+<!ENTITY	mi.buttonAction.tooltip	             "">
+
+<!ENTITY	mi.captureVisibleArea.label	         "Capture visible area and:">
+<!ENTITY	mi.captureVisibleArea.tooltip	     "">
+
+<!ENTITY	mi.upload.label	                     "              upload">
+<!ENTITY	mi.upload.tooltip	                 "">
+
+<!ENTITY	mi.copyToClipboard.label	         "              copy image to clipboard">
+<!ENTITY	mi.copyToClipboard.tooltip	         "">
+
+<!ENTITY	mi.uploadAndCopy.label	             "              upload and copy image to clipboard">
+<!ENTITY	mi.uploadAndCopy.tooltip	         "">
+
+<!ENTITY	mi.saveAsPng.label	                 "              save as png">
+<!ENTITY	mi.saveAsPng.tooltip	             "">
+
+<!ENTITY	mi.captureWholePage.label	         "Capture whole page and:">
+<!ENTITY	mi.captureWholePage.tooltip	         "">
+
+<!ENTITY	mi.doThisNow.label	                 "Do this now (without changing settings)">
+<!ENTITY	mi.doThisNow.tooltip	             "">
+
+<!ENTITY	mi.viewTutorial.label	             "View Tutorial">
+<!ENTITY	mi.viewTutorial.tooltip	             "Click here to view a tutorial">
+
+<!ENTITY	mi.help.label	                     "Help">
+<!ENTITY	mi.help.tooltip	                     "Click here to get help">
+
+<!ENTITY	cm.capture.label	                 "Capture">
+<!ENTITY	cm.capture.accesskey	             "U">
+
+<!ENTITY	options.title	                         "Ecosia Options">
+<!ENTITY	options.defaultSE.label                  "Make Default Search engine">
+<!ENTITY	options.defaultSE.accesskey              "D">
+<!ENTITY	options.personalStat.label               "Show Personal Statistics">
+<!ENTITY	options.personalStat.accesskey           "P">
+<!ENTITY	options.addressBarProvider.label         "Make Ecosia Default Provider for Address bar">
+<!ENTITY	options.addressBarProvider.accesskey     "A">
+
+
+<!ENTITY	tooltip	                        "Ecosia Plugin">
+                
+<!ENTITY	template.alone                	"You saved:">
+<!ENTITY	template.total                	"All users saved:">
+
+<!ENTITY	menuitem.spreadTheWord	        "Spread The Word">
+<!ENTITY	menuitem.howItWorks	            "How It Works">
+<!ENTITY	menuitem.options	            "Options...">
+<!ENTITY	menuitem.faq	                "FAQ">
+<!ENTITY	menuitem.feedback	            "Give Feedback">
+<!ENTITY	menuitem.statistics	            "Statistics">
+<!ENTITY	menuitem.about	                "About Ecosia">

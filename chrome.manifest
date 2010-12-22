@@ -1,0 +1,5 @@
+content   uploadscreenshot chrome/content/
+skin      uploadscreenshot classic/1.0 chrome/skin/
+locale    uploadscreenshot en-US chrome/locale/en-US/
+
+overlay chrome://browser/content/browser.xul chrome://uploadscreenshot/content/uploadscreenshot.xul

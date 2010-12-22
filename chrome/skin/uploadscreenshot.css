@@ -1,0 +1,24 @@
+#uploadscreen-button {
+    list-style-image: url("chrome://uploadscreenshot/skin/icon_tiny.png");
+    -moz-box-orient: vertical;
+}
+
+#uploadscreen_popup menuitem[selected=true] {
+    list-style-image: url("chrome://uploadscreenshot/skin/tick_16.png");
+}
+
+#screenshot_upload_mi {
+    list-style-image: url("chrome://uploadscreenshot/skin/icon_tiny_16.png");
+}
+
+#do_this_now, #button_action {
+    font-weight: bold;
+}
+
+.non-selectable {
+    color: black;
+}
+
+.non-selectable[_moz-menuactive="true"] {
+    color: white;
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://uploadscreenshot/locale/labels.dtd">
+
+<prefwindow id="UploadScreenshot_Options"
+            xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+            title="UploadScreenshot.com Capture - Options">
+
+    <prefpane>
+        <preferences>
+            <preference id="prefUploadScreenShot" name="extensions.uploadScreenShot.mode" type="string"/>
+        </preferences>
+
+        <vbox>
+            <label value="&mi.captureVisibleArea.label;"/>
+            <radiogroup preference="prefUploadScreenShot">
+                <radio label="&mi.upload.label;" value="visiable_upload"/>
+                <radio label="&mi.copyToClipboard.label;" value="visiable_copy_clip"/>
+                <radio label="&mi.uploadAndCopy.label;" value="visiable_copy_clip_upload"/>
+            </radiogroup>
+        </vbox>
+    </prefpane>
+</prefwindow>

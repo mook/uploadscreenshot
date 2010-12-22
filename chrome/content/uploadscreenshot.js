@@ -345,67 +345,43 @@ if (!com.uploadScreenShot) {
         uninstallObserver : {
             observe: function(aSubject, aTopic, aData) {
                 with (com.uploadScreenShot) {
-                    try {
-                        var item = aSubject.QueryInterface(Components.interfaces.nsIUpdateItem);
+                    if (!(aSubject instanceof Components.interfaces.nsIUpdateItem)) {
+                        return;
+                    }
+                    if (aSubject.id != _PLUGIN_UUID) {
+                        return;
+                    }
 
-                        if (item.id != _PLUGIN_UUID) {
-                            return;
-                        }
+                    if (aData == "item-uninstalled") {
+                        _openFeedbackPage();
 
-                        if (aData == "item-uninstalled") {
-                            _openFeedbackPage();
+                        // Remove all properties that was installed by our extension
+                        Prefs.removeAll();
 
-                            // Remove all properties that was installed by our extension
-                            Prefs.removeAll();
-                        }
-                    } catch (e) {
+                        _openSuccessPage();
                     }
                 }
-            }
-        },
-
-        actionObserver : {
-            observe: function(aSubject, aTopic, aData) {
-                with (com.uploadScreenShot) {
-                    try {
-                        var item = aSubject.QueryInterface(Components.interfaces.nsIUpdateItem);
-
-                        if (item.id != _PLUGIN_UUID) {
-                            return;
-                        }
-
-                        if (aData == "item-uninstalled") {
-                            _openSuccessPage();
-                        }
-                    } catch (e) {
-                    }
-                }
-            }
-        },
-
-        addActionObserver : function() {
-            with (com.uploadScreenShot) {
-                _observerService.addObserver(actionObserver, "em-action-requested", false);
             }
         },
 
         addUninstallObserver : function() {
-            with (com.uploadScreenShot) {
-                _observerService.addObserver(uninstallObserver, "em-action-requested", false);
-            }
+            com.uploadScreenShot
+               ._observerService
+               .addObserver(com.uploadScreenShot.uninstallObserver,
+                            "em-action-requested",
+                            false);
         },
 
         removeUninstallObserver : function() {
-            with (com.uploadScreenShot) {
-                if (_observerService.removeUninstallObserver) {
-                    _observerService.removeUninstallObserver(uninstallObserver, "em-action-requested", false);
-                }
-            }
+            com.uploadScreenShot
+               ._observerService
+               .removeObserver(com.uploadScreenShot.uninstallObserver,
+                               "em-action-requested",
+                               false);
         }
     };
 }
 
-com.uploadScreenShot.addActionObserver();
 com.uploadScreenShot.addUninstallObserver();
 
 window.addEventListener("load", com.uploadScreenShot.load, true);

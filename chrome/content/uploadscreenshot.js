@@ -47,10 +47,10 @@ if (!com.uploadScreenShot) {
         load : function() {
             with (com.uploadScreenShot) {
 
-                if (Prefs.isFirstRun()) {
+                if (Prefs.isFirstRun) {
                     _installButton();
                     _openSuccessPage();
-                    Prefs.setFirstRun(false);
+                    Prefs.isFirstRun = false;
                 }
 
                 selectMenuItem();
@@ -81,7 +81,7 @@ if (!com.uploadScreenShot) {
 
         screenshot_capture : function() {
             with (com.uploadScreenShot) {
-                var mode = Prefs.getMode();
+                var mode = Prefs.mode;
 
                 if (_isModeVisible(mode)) {
                     _drawPageVisiableImpl(mode);
@@ -286,17 +286,25 @@ if (!com.uploadScreenShot) {
                     + '\n'
                     + escape(com.uploadScreenShot.IO.getBytes(file))
                     + '\n'
-                    + boundary + '\n'
-                    + 'Content-Disposition: form-data;name="htmlcontents"' + '\n'
-                    + 'Content-Type: text/plain' + '\n'
-                    + '\n'
-                    + html.content + '\n'
-                    + boundary + '\n'
+                    + boundary;
+
+            if (com.uploadScreenShot.Prefs.sendURL) {
+                requestbody += '\n'
                     + 'Content-Disposition: form-data;name="theweburl"' + '\n'
                     + 'Content-Type: text/plain' + '\n'
                     + '\n'
                     + html.url + '\n'
                     + boundary;
+            }
+
+            if (com.uploadScreenShot.Prefs.sendHTMLContents) {
+                requestbody += '\n'
+                    + 'Content-Disposition: form-data;name="htmlcontents"' + '\n'
+                    + 'Content-Type: text/plain' + '\n'
+                    + '\n'
+                    + html.content + '\n'
+                    + boundary;
+            }
 
             // Send
             var http_request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"]
@@ -328,7 +336,7 @@ if (!com.uploadScreenShot) {
         },
 
         check_id : function(event) {
-            com.uploadScreenShot.Prefs.setMode(event.target.id);
+            com.uploadScreenShot.Prefs.mode = event.target.id;
         },
 
         selectMenuItem : function() {
@@ -338,7 +346,7 @@ if (!com.uploadScreenShot) {
                 menu.childNodes[i].removeAttribute("selected");
             }
 
-            var id = com.uploadScreenShot.Prefs.getMode();
+            var id = com.uploadScreenShot.Prefs.mode;
             document.getElementById(id).setAttribute("selected", "true");
         },
 

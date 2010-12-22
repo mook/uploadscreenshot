@@ -152,7 +152,7 @@
     </toolbarpalette>
 
     <statusbar id="status-bar">
-        <statusbarpanel id="screenshot_status" label=""/>
+        <statusbarpanel id="screenshot_status"/>
     </statusbar>
 
     <popup id="contentAreaContextMenu">

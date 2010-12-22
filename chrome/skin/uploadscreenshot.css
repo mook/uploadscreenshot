@@ -15,6 +15,10 @@
     font-weight: bold;
 }
 
+#screenshot_status:not([label]) {
+    visibility: collapse;
+}
+
 .non-selectable {
     color: black;
 }

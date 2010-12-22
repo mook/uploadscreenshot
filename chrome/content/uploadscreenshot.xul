@@ -12,9 +12,8 @@
     <script type="application/x-javascript" src="chrome://uploadscreenshot/content/utils.js"></script>
     <script type="application/x-javascript" src="chrome://global/content/globalOverlay.js"/>
 
-    <statusbar id="status-bar">
+    <toolbarpalette id="BrowserToolbarPalette">
         <toolbarbutton id="uploadscreen-button"
-                       hidden="true"
                        type="menu-button"
                        align="center"
                        label="&button.label;"
@@ -150,7 +149,9 @@
                           oncommand="com.uploadScreenShot.openTab('http://www.uploadscreenshot.com/ff-help');event.stopPropagation();"/>
             </menupopup>
         </toolbarbutton>
+    </toolbarpalette>
 
+    <statusbar id="status-bar">
         <statusbarpanel id="screenshot_status" label=""/>
     </statusbar>
 

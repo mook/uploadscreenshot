@@ -18,30 +18,37 @@ if (!com.uploadScreenShot) {
             }
         },
 
-        // This way is more stable then standard
         _installButton : function() {
             var btn = document.getElementById("uploadscreen-button");
+            var toolbox = document.getElementById("navigator-toolbox");
+            var toolbar = null;
 
             var searchbar = document.getElementById("search-container");
             if (searchbar) {
-                if (searchbar.nextSibling) {
-                    searchbar.nextSibling.parentNode.insertBefore(btn, searchbar.nextSibling);
-                } else {
-                    searchbar.parentNode.appendChild(btn);
-                }
+                // a search box is available; go after it
+                toolbar = searchbar.parentNode;
+                toolbar.insertItem("uploadscreen-button",
+                                   searchbar.nextSibling,
+                                   false);
             } else {
+                // no search box; go in front of the URL bar
                 var urlbar = document.getElementById("urlbar-container");
-                urlbar.parentNode.insertBefore(btn, urlbar);
+                toolbar = urlbar.parentNode;
+                toolbar.insertItem("uploadscreen-button",
+                                   urlbar,
+                                   false);
             }
 
-            btn.setAttribute("hidden", "false");
+            // persist the change (we won't run this again!)
+            toolbar.setAttribute("currentset", toolbar.currentSet);
+            document.persist(toolbar.id, "currentset");
         },
 
         load : function() {
             with (com.uploadScreenShot) {
-                _installButton();
 
                 if (Prefs.isFirstRun()) {
+                    _installButton();
                     _openSuccessPage();
                     Prefs.setFirstRun(false);
                 }

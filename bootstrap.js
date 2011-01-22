@@ -71,14 +71,41 @@ function startup(addon, reason) {
   }
 
   // apply the new overlay to existing windows
+  var xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
+              .createInstance();
+  xhr.open("GET", OVERLAY_URL, false /* sync */);
+  xhr.send();
+  var sourceElem = xhr.responseXML.getElementById("uploadscreen-button");
+  Components.utils.reportError(sourceElem);
   var iter = Cc["@mozilla.org/appshell/window-mediator;1"]
                .getService(Ci.nsIWindowMediator)
                .getEnumerator("navigator:browser");
   while (iter.hasMoreElements()) {
     var win = iter.getNext().QueryInterface(Ci.nsIDOMWindow);
-    var doc = win.document.QueryInterface(Ci.nsIDOMXULDocument);
-    Components.utils.reportError(doc.location.href + " -> " + OVERLAY_URL);
-    doc.loadOverlay(OVERLAY_URL, function(){});
+    let doc = win.document.QueryInterface(Ci.nsIDOMXULDocument);
+    doc.loadOverlay(OVERLAY_URL, function(){
+      if (doc.getElementById("uploadscreen-button")) {
+        // this somehow loaded? skip.
+        return;
+      }
+      var toolbox = doc.getElementById("navigator-toolbox");
+      var toolbars = Array.slice(toolbox.childNodes)
+                          .concat(toolbox.externalToolbars)
+                          .filter(function(x) "currentSet" in x);
+      for each (var toolbar in toolbars) {
+        var currentSet =  toolbar.getAttribute("currentset").split(",");
+        var index = currentSet.indexOf("uploadscreen-button");
+        if (index < 0) continue;
+        var nextNode = null;
+        for (var i = index + 1; i < currentSet.length && !nextNode; ++i) {
+          nextNode = doc.getElementById(currentSet[i]);
+        }
+        var elem = doc.importNode(sourceElem, true);
+        toolbox.palette.appendChild(elem);
+        toolbar.insertItem("uploadscreen-button", nextNode, false);
+        break;
+      }
+    });
   }
 }
 

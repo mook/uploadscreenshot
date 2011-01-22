@@ -1,68 +1,12 @@
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+const OVERLAY_URL = "chrome://uploadscreenshot/content/uploadscreenshot.xul";
+
 function startup(addon, reason) {
-  const Cc = Components.classes;
-  const Ci = Components.interfaces;
-
-  // apply the new overlay to existing windows
-  var iter = Cc["@mozilla.org/appshell/window-mediator;1"]
-               .getService(Ci.nsIWindowMediator)
-               .getEnumerator("navigator:browser");
-  while (iter.hasMoreElements()) {
-    var win = iter.getNext().QueryInterface(Ci.nsIDOMWindow);
-    var doc = win.document.QueryInterface(Ci.nsIDOMXULDocument);
-    doc.loadOverlay("chrome://uploadscreenshot/content/uploadscreenshot.xul",
-                    function(){})
-  }
-}
-
-function shutdown(addon, reason) {
-  const Cc = Components.classes;
-  const Ci = Components.interfaces;
-
-  const APP_SHUTDOWN = 2;
-  if (reason == APP_SHUTDOWN) {
-    // we don't need to clean up for app shutdown
-    return;
-  }
-
-  // un-apply the new overlay to existing windows
-  var xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-              .createInstance();
-  xhr.open("GET",
-           "chrome://uploadscreenshot/content/uploadscreenshot.xul",
-           false /* sync */);
-  xhr.send();
-  var nodes = [];
-  var root = xhr.responseXML.documentElement;
-  for (var list = root.childNodes, i = 0; i < list.length; ++i) {
-    var elem = list.item(i);
-    if (!(elem instanceof Ci.nsIDOMElement) || !elem.hasAttribute("id"))
-      continue;
-    var id = elem.getAttribute("id");
-    for (var children = elem.childNodes, j = 0; j < children.length; ++j) {
-      var child = children.item(j);
-      if (!(child instanceof Ci.nsIDOMElement) || !child.hasAttribute("id"))
-        continue;
-      nodes.push(child.getAttribute("id"));
-    }
-  }
-
-  var iter = Cc["@mozilla.org/appshell/window-mediator;1"]
-               .getService(Ci.nsIWindowMediator)
-               .getEnumerator("navigator:browser");
-  while (iter.hasMoreElements()) {
-    let win = iter.getNext().QueryInterface(Ci.nsIDOMWindow);
-    let doc = win.document.QueryInterface(Ci.nsIDOMXULDocument);
-    nodes.forEach(function(id) {
-      let elem = doc.getElementById(id);
-      if (elem)
-        elem.parentNode.removeChild(elem);
-    });
-  }
-}
-
-function install(addon, reason) {
-  const Cc = Components.classes;
-  const Ci = Components.interfaces;
+  // somebody decided that bootstrapped addons won't load default prefs.
+  Cc["@mozilla.org/preferences-service;1"]
+    .getService(Ci.nsIPrefServiceInternal)
+    .readExtensionPrefs(addon.installPath);
   
   // we need to register our chrome.manifest
   // this is a god-awful hack...
@@ -125,6 +69,76 @@ function install(addon, reason) {
   } finally {
     libxul.close();
   }
+
+  // apply the new overlay to existing windows
+  var iter = Cc["@mozilla.org/appshell/window-mediator;1"]
+               .getService(Ci.nsIWindowMediator)
+               .getEnumerator("navigator:browser");
+  while (iter.hasMoreElements()) {
+    var win = iter.getNext().QueryInterface(Ci.nsIDOMWindow);
+    var doc = win.document.QueryInterface(Ci.nsIDOMXULDocument);
+    Components.utils.reportError(doc.location.href + " -> " + OVERLAY_URL);
+    doc.loadOverlay(OVERLAY_URL, function(){});
+  }
+}
+
+function shutdown(addon, reason) {
+  const Cc = Components.classes;
+  const Ci = Components.interfaces;
+
+  const APP_SHUTDOWN = 2;
+  if (reason == APP_SHUTDOWN) {
+    // we don't need to clean up for app shutdown
+    return;
+  }
+
+  // check to see that the package got registered
+  var ios = Cc["@mozilla.org/network/io-service;1"]
+              .getService(Ci.nsIIOService);
+  try {
+    Cc["@mozilla.org/chrome/chrome-registry;1"]
+      .getService(Ci.nsIChromeRegistry)
+      .convertChromeURL(ios.newURI(OVERLAY_URL, null, null));
+  } catch (e) {
+    // not registered, nothing we can do here
+    return;
+  }
+
+  // un-apply the new overlay to existing windows
+  var xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
+              .createInstance();
+  xhr.open("GET", OVERLAY_URL, false /* sync */);
+  xhr.send();
+  var nodes = [];
+  var root = xhr.responseXML.documentElement;
+  for (var list = root.childNodes, i = 0; i < list.length; ++i) {
+    var elem = list.item(i);
+    if (!(elem instanceof Ci.nsIDOMElement) || !elem.hasAttribute("id"))
+      continue;
+    var id = elem.getAttribute("id");
+    for (var children = elem.childNodes, j = 0; j < children.length; ++j) {
+      var child = children.item(j);
+      if (!(child instanceof Ci.nsIDOMElement) || !child.hasAttribute("id"))
+        continue;
+      nodes.push(child.getAttribute("id"));
+    }
+  }
+
+  var iter = Cc["@mozilla.org/appshell/window-mediator;1"]
+               .getService(Ci.nsIWindowMediator)
+               .getEnumerator("navigator:browser");
+  while (iter.hasMoreElements()) {
+    let win = iter.getNext().QueryInterface(Ci.nsIDOMWindow);
+    let doc = win.document.QueryInterface(Ci.nsIDOMXULDocument);
+    nodes.forEach(function(id) {
+      let elem = doc.getElementById(id);
+      if (elem)
+        elem.parentNode.removeChild(elem);
+    });
+  }
+}
+
+function install(addon, reason) {
 }
 
 function uninstall(addon, reason) {

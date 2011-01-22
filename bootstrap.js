@@ -15,7 +15,49 @@ function startup(addon, reason) {
 }
 
 function shutdown(addon, reason) {
-  
+  const Cc = Components.classes;
+  const Ci = Components.interfaces;
+
+  const APP_SHUTDOWN = 2;
+  if (reason == APP_SHUTDOWN) {
+    // we don't need to clean up for app shutdown
+    return;
+  }
+
+  // un-apply the new overlay to existing windows
+  var xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
+              .createInstance();
+  xhr.open("GET",
+           "chrome://uploadscreenshot/content/uploadscreenshot.xul",
+           false /* sync */);
+  xhr.send();
+  var nodes = [];
+  var root = xhr.responseXML.documentElement;
+  for (var list = root.childNodes, i = 0; i < list.length; ++i) {
+    var elem = list.item(i);
+    if (!(elem instanceof Ci.nsIDOMElement) || !elem.hasAttribute("id"))
+      continue;
+    var id = elem.getAttribute("id");
+    for (var children = elem.childNodes, j = 0; j < children.length; ++j) {
+      var child = children.item(j);
+      if (!(child instanceof Ci.nsIDOMElement) || !child.hasAttribute("id"))
+        continue;
+      nodes.push(child.getAttribute("id"));
+    }
+  }
+
+  var iter = Cc["@mozilla.org/appshell/window-mediator;1"]
+               .getService(Ci.nsIWindowMediator)
+               .getEnumerator("navigator:browser");
+  while (iter.hasMoreElements()) {
+    let win = iter.getNext().QueryInterface(Ci.nsIDOMWindow);
+    let doc = win.document.QueryInterface(Ci.nsIDOMXULDocument);
+    nodes.forEach(function(id) {
+      let elem = doc.getElementById(id);
+      if (elem)
+        elem.parentNode.removeChild(elem);
+    });
+  }
 }
 
 function install(addon, reason) {
